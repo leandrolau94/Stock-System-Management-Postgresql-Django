@@ -1,0 +1,128 @@
+{% load static %}
+
+<link href="{% static 'stock/mdb5-free-standard/css/mdb.min.css' %}" rel="stylesheet" type="text/css"/>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- header -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarExample01"
+                aria-controls="navbarExample01"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <i class="fas fa-bars"></i>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarExample01">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item active">
+                    <a class="nav-link" aria-current="page" href="{% url 'stock:index' %}">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'stock:stock_list' %}">Items in Stock</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Sell Analysis</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Reports</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="d-flex mt-3 table-responsive p-3">
+        {% if items %}
+            <div class="table-responsive">
+                <table class="table caption-top bg-secondary text-light table-hover table-borderless">
+                    <caption>
+                      <h3 class="text-center">Items Table</h3>
+                    </caption>
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Item</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Acquisition Price</th>
+                            <th scope="col">Sell Price</th>
+                            <th scope="col">On Discount</th>
+                            <th scope="col">Discount Percentage</th>
+                            <th scope="col">Supplier</th>
+                            <th scope="col">Arrival Date</th>
+                            <th scope="col">Latest Modified Date</th>
+                            <th scope="col">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                            <tr class="item">
+                                <th scope="row">{{ item.id }}</th>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.category }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.acquisition_price }}</td>
+                                <td>{{ item.sell_price }}</td>
+                                <td>{{ item.discount }}</td>
+                                <td>{{ item.discount_percentage }}</td>
+                                <td>{{ item.supplier }}</td>
+                                <td>{{ item.created_at }}</td>
+                                <td>{{ item.modified_at }}</td>
+                                <td>
+                                  <div class="btn-group btn-group-sm shadow-0" role="group">
+                                    <form action="{% url 'stock:detail_item' item.id %}">
+                                      {% csrf_token %}
+                                      <button type="submit" class="btn btn-primary btn-floating" data-mdb-color="dark">
+                                        <span style="font-size: 1.4rem;">&#9998;</span>
+                                      </button>
+                                    </form>
+                                    <form action="{% url 'stock:delete_item' item.id %}" method="post">
+                                      {% csrf_token %}
+                                      <button type="submit" class="btn btn-danger btn-floating" data-mdb-color="dark">
+                                        <span style="font-size: 1.4rem;">&#128465;</span>
+                                      </button>
+                                    </form>
+                                  </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <input class="form-control mb-3" id="mySearch" type="text" placeholder="Search Item By Any field...">
+            </div>
+        {% else %}
+            <p>Empty Stock. Please add items.</p>
+        {% endif %}
+    </div>
+    <script src="{% static 'stock/mdb5-free-standard/js/mdb.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
+    <script>
+      $(document).ready(function(){
+        $('#mySearch').on("keyup", function(){
+          var value = $(this).val().toLowerCase();
+          $('.item').filter(function(){
+            $(this).toggle(
+              $(this).text().toLowerCase().indexOf(value) > -1
+            );
+          })
+        });
+      })
+    </script>
+  </body>
+</html>

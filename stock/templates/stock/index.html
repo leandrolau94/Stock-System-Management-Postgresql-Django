@@ -1,0 +1,103 @@
+{% load static %}
+
+<link href="{% static 'stock/mdb5-free-standard/css/mdb.min.css' %}" rel="stylesheet" type="text/css"/>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- header -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarExample01"
+                aria-controls="navbarExample01"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <i class="fas fa-bars"></i>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarExample01">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item active">
+                    <a class="nav-link" aria-current="page" href="{% url 'stock:index' %}">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'stock:stock_list' %}">Items in Stock</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Sell Analysis</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Reports</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <div class="card mt-4 bg-light shadow-5-strong">
+                    <div class="card-body">
+                        <h5 class="card-title text-center text-secondary">Add Item to Stock</h5>
+                        <form action="{% url 'stock:create_item' %}" method="post">
+                            {% csrf_token %}
+                            <!-- name input -->
+                            <div class="form-outline mb-4">
+                                <input type="text" id="formname" class="form-control" name="item_name" required />
+                                <label class="form-label" for="formname">Item Name</label>
+                            </div>
+
+                            <!-- category input -->
+                            <div class="form-outline mb-4">
+                                <input type="text" id="formcategory" class="form-control" name="item_category" required />
+                                <label class="form-label" for="formcategory">Item Category</label>
+                            </div>
+
+                            <!-- quantity input -->
+                            <div class="form-outline mb-4">
+                                <input type="text" id="formquantity" class="form-control" name="item_quantity" required />
+                                <label class="form-label" for="formquantity">Quantity</label>
+                            </div>
+
+                            <!-- acquisition_price input -->
+                            <div class="form-outline mb-4">
+                                <input type="text" id="formacqprice" class="form-control" name="item_acquisition_price" required />
+                                <label class="form-label" for="formacqprice">Acquisition Price</label>
+                            </div>
+
+                            <!-- sell_price input -->
+                            <div class="form-outline mb-4">
+                                <input type="text" id="formsellprice" class="form-control" name="item_sell_price" required />
+                                <label class="form-label" for="formsellprice">Sell Price</label>
+                            </div>
+
+                            <!-- supplier input -->
+                            <div class="form-outline mb-4">
+                                <input type="text" id="formsupplier" class="form-control" name="item_supplier" required />
+                                <label class="form-label" for="formsupplier">Supplier</label>
+                            </div>
+
+                            <!-- Submit button -->
+                            <button type="submit" class="btn btn-primary btn-block">Save in Stock</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'stock/mdb5-free-standard/js/mdb.min.js' %}"></script>
+  </body>
+</html>

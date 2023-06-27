@@ -1,0 +1,166 @@
+{% load static %}
+{% load mathfilters %}
+
+<link href="{% static 'stock/mdb5-free-standard/css/mdb.min.css' %}" rel="stylesheet" type="text/css"/>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- header -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarExample01"
+                aria-controls="navbarExample01"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <i class="fas fa-bars"></i>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarExample01">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item active">
+                    <a class="nav-link" aria-current="page" href="{% url 'stock:index' %}">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'stock:stock_list' %}">Items in Stock</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Sell Analysis</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Reports</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="d-flex mt-3 table-responsive p-3 row">
+        <div class="table-responsive col-12">
+            <table class="table caption-top bg-secondary text-light table-hover table-borderless">
+                <caption>
+                  <h3 class="text-center">Detailed Item View</h3>
+                </caption>
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Item</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Acquisition Price</th>
+                        <th scope="col">Sell Price</th>
+                        <th scope="col">On Discount</th>
+                        <th scope="col">Discount Percentage</th>
+                        <th scope="col">Supplier</th>
+                        <th scope="col">Arrival Date</th>
+                        <th scope="col">Latest Modified Date</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="item">
+                        <th scope="row">{{ item.id }}</th>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.category }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.acquisition_price }}</td>
+                        <td>{{ item.sell_price }}</td>
+                        <td>{{ item.discount }}</td>
+                        <td>{{ item.discount_percentage }}</td>
+                        <td>{{ item.supplier }}</td>
+                        <td>{{ item.created_at }}</td>
+                        <td>{{ item.modified_at }}</td>
+                        <td>
+                          <div class="btn-group btn-group-sm shadow-0" role="group">
+                            <form action="{% url 'stock:update_item' item.id %}" method="post">
+                              {% csrf_token %}
+                              <button type="button" class="btn btn-success btn-floating" data-mdb-color="dark" data-mdb-toggle="modal" data-mdb-target="#exampleModal">
+                                <span style="font-size: 1.4rem;">&#9850;</span>
+                              </button>
+                              <!-- Modal -->
+                              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
+                                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- name input -->
+                                        <div class="form-outline mb-4">
+                                            <input type="text" id="formname" class="form-control" name="update_name" value="{{ item.name }}" />
+                                            <label class="form-label" for="formname">Item Name</label>
+                                        </div>
+                                        <!-- category input -->
+                                        <div class="form-outline mb-4">
+                                            <input type="text" id="formcategory" class="form-control" name="update_category" value="{{ item.category }}" />
+                                            <label class="form-label" for="formcategory">Item Category</label>
+                                        </div>
+                                        <!-- quantity input -->
+                                        <div class="form-outline mb-4">
+                                            <input type="text" id="formquantity" class="form-control" name="update_quantity" value="{{ item.quantity }}" />
+                                            <label class="form-label" for="formquantity">Quantity</label>
+                                        </div>
+                                        <!-- acquisition_price input -->
+                                        <div class="form-outline mb-4">
+                                            <input type="text" id="formacqprice" class="form-control" name="update_acquisition_price" value="{{ item.acquisition_price }}" />
+                                            <label class="form-label" for="formacqprice">Acquisition Price</label>
+                                        </div>
+                                        <!-- sell_price input -->
+                                        <div class="form-outline mb-4">
+                                            <input type="text" id="formsellprice" class="form-control" name="update_sell_price" value="{{ item.sell_price }}" />
+                                            <label class="form-label" for="formsellprice">Sell Price</label>
+                                        </div>
+                                        <!-- supplier input -->
+                                        <div class="form-outline mb-4">
+                                            <input type="text" id="formsupplier" class="form-control" name="update_supplier" value="{{ item.supplier}}" />
+                                            <label class="form-label" for="formsupplier">Supplier</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                                </div>
+                              </div>
+                            </form>
+                            <form action="#">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-info btn-floating" data-mdb-color="dark">
+                                <span style="font-size: 1.4rem;">&#10010;</span>
+                              </button>
+                            </form>
+                          </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-12 text-center">
+            Total earnings: &#x24; {{ item.sell_price|sub:item.acquisition_price|mul:item.quantity }}
+        </div>
+        <div class="col-12 text-center">
+            Earnings per unity: &#x24; {{ item.sell_price|sub:item.acquisition_price }}
+        </div>
+        <div class="col-12 text-center mt-2">
+            <a href="{% url 'stock:stock_list' %}" class="btn btn-primary">Back</a>
+        </div>
+    </div>
+    <script src="{% static 'stock/mdb5-free-standard/js/mdb.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
+  </body>
+</html>
