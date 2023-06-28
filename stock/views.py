@@ -8,6 +8,17 @@ from .models import Item
 class Index(generic.TemplateView):
     template_name = 'stock/index.html'
 
+class StockDetailView(generic.DetailView):
+    model = Item
+    template_name = 'stock/stock_detail.html'
+
+class StockListView(generic.ListView):
+    template_name = 'stock/stock_list.html'
+    context_object_name = "items"
+
+    def get_queryset(self):
+        return Item.objects.all().order_by('id')
+
 def create_item(request):
     item_name = request.POST["item_name"]
     item_category = request.POST["item_category"]
@@ -66,14 +77,3 @@ def decrease_item_quantity(request, item_id):
     increase_item.modified_at = timezone.now()
     increase_item.save()
     return redirect(reverse('stock:stock_list'))
-
-class StockDetailView(generic.DetailView):
-    model = Item
-    template_name = 'stock/stock_detail.html'
-
-class StockListView(generic.ListView):
-    template_name = 'stock/stock_list.html'
-    context_object_name = "items"
-
-    def get_queryset(self):
-        return Item.objects.all().order_by('id')
