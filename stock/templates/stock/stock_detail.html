@@ -92,56 +92,106 @@
                               <!-- Modal -->
                               <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
-                                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
+                                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- name input -->
+                                            <div class="form-outline mb-4">
+                                                <input type="text" id="formname" class="form-control" name="update_name" value="{{ item.name }}" />
+                                                <label class="form-label" for="formname">Item Name</label>
+                                            </div>
+                                            <!-- category input -->
+                                            <div class="form-outline mb-4">
+                                                <input type="text" id="formcategory" class="form-control" name="update_category" value="{{ item.category }}" />
+                                                <label class="form-label" for="formcategory">Item Category</label>
+                                            </div>
+                                            <!-- quantity input -->
+                                            <div class="form-outline mb-4">
+                                                <input type="text" id="formquantity" class="form-control" name="update_quantity" value="{{ item.quantity }}" />
+                                                <label class="form-label" for="formquantity">Quantity</label>
+                                            </div>
+                                            <!-- acquisition_price input -->
+                                            <div class="form-outline mb-4">
+                                                <input type="text" id="formacqprice" class="form-control" name="update_acquisition_price" value="{{ item.acquisition_price }}" />
+                                                <label class="form-label" for="formacqprice">Acquisition Price</label>
+                                            </div>
+                                            <!-- sell_price input -->
+                                            <div class="form-outline mb-4">
+                                                <input type="text" id="formsellprice" class="form-control" name="update_sell_price" value="{{ item.sell_price }}" />
+                                                <label class="form-label" for="formsellprice">Sell Price</label>
+                                            </div>
+                                            <!-- supplier input -->
+                                            <div class="form-outline mb-4">
+                                                <input type="text" id="formsupplier" class="form-control" name="update_supplier" value="{{ item.supplier}}" />
+                                                <label class="form-label" for="formsupplier">Supplier</label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                        <!-- name input -->
-                                        <div class="form-outline mb-4">
-                                            <input type="text" id="formname" class="form-control" name="update_name" value="{{ item.name }}" />
-                                            <label class="form-label" for="formname">Item Name</label>
-                                        </div>
-                                        <!-- category input -->
-                                        <div class="form-outline mb-4">
-                                            <input type="text" id="formcategory" class="form-control" name="update_category" value="{{ item.category }}" />
-                                            <label class="form-label" for="formcategory">Item Category</label>
-                                        </div>
-                                        <!-- quantity input -->
-                                        <div class="form-outline mb-4">
-                                            <input type="text" id="formquantity" class="form-control" name="update_quantity" value="{{ item.quantity }}" />
-                                            <label class="form-label" for="formquantity">Quantity</label>
-                                        </div>
-                                        <!-- acquisition_price input -->
-                                        <div class="form-outline mb-4">
-                                            <input type="text" id="formacqprice" class="form-control" name="update_acquisition_price" value="{{ item.acquisition_price }}" />
-                                            <label class="form-label" for="formacqprice">Acquisition Price</label>
-                                        </div>
-                                        <!-- sell_price input -->
-                                        <div class="form-outline mb-4">
-                                            <input type="text" id="formsellprice" class="form-control" name="update_sell_price" value="{{ item.sell_price }}" />
-                                            <label class="form-label" for="formsellprice">Sell Price</label>
-                                        </div>
-                                        <!-- supplier input -->
-                                        <div class="form-outline mb-4">
-                                            <input type="text" id="formsupplier" class="form-control" name="update_supplier" value="{{ item.supplier}}" />
-                                            <label class="form-label" for="formsupplier">Supplier</label>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
-                                    </div>
-                                </div>
                                 </div>
                               </div>
                             </form>
-                            <form action="#">
+                            <form action="{% url 'stock:increase_item_quantity' item.id %}" method="post">
                               {% csrf_token %}
-                              <button type="submit" class="btn btn-info btn-floating" data-mdb-color="dark">
+                              <button type="submit" class="btn btn-info btn-floating" data-mdb-color="dark" data-mdb-toggle="modal" data-mdb-target="#incrementModal">
                                 <span style="font-size: 1.4rem;">&#10010;</span>
                               </button>
+                              <!-- Modal -->
+                              <div class="modal fade" id="incrementModal" tabindex="-1" aria-labelledby="incrementModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="incrementModalLabel">Edit {{ item.name }} quantity</h5>
+                                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- quantity input -->
+                                            <div class="form-outline mb-4">
+                                                <input type="text" id="formincrease" class="form-control" name="increase_quantity" required />
+                                                <label class="form-label" for="formincrease">Quantity</label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Increment Item quantity</button>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </form>
+                            <form action="{% url 'stock:decrease_item_quantity' item.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-floating" data-mdb-color="dark" data-mdb-toggle="modal" data-mdb-target="#decrementModal">
+                                  <span style="font-size: 1.4rem;">&#8722;</span>
+                                </button>
+                                <!-- Modal -->
+                              <div class="modal fade" id="decrementModal" tabindex="-1" aria-labelledby="decrementModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="decrementModalLabel">Edit {{ item.name }} quantity</h5>
+                                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- quantity input -->
+                                            <div class="form-outline mb-4">
+                                                <input type="text" id="formdecrease" class="form-control" name="decrease_quantity" required />
+                                                <label class="form-label" for="formdecrease">Quantity</label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Decrement Item quantity</button>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
                             </form>
                           </div>
                         </td>

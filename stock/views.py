@@ -51,6 +51,22 @@ def update_item(request, item_id):
     updated_item.save()
     return redirect(reverse('stock:stock_list'))
 
+def increase_item_quantity(request, item_id):
+    increase_quantity = request.POST['increase_quantity']
+    increase_item = Item.objects.get(id=item_id)
+    increase_item.quantity += int(increase_quantity)
+    increase_item.modified_at = timezone.now()
+    increase_item.save()
+    return redirect(reverse('stock:stock_list'))
+
+def decrease_item_quantity(request, item_id):
+    decrease_quantity = request.POST['decrease_quantity']
+    increase_item = Item.objects.get(id=item_id)
+    increase_item.quantity -= int(decrease_quantity)
+    increase_item.modified_at = timezone.now()
+    increase_item.save()
+    return redirect(reverse('stock:stock_list'))
+
 class StockDetailView(generic.DetailView):
     model = Item
     template_name = 'stock/stock_detail.html'
