@@ -47,11 +47,11 @@
     </header>
 
     <div class="d-flex mt-3 table-responsive p-3" style="height: 33rem;">
-        {% if items %}
-            <div class="table-responsive">
+        {% if sell_item %}
+            <form class="table-responsive">
                 <table class="table caption-top bg-secondary text-light table-hover table-borderless overflow-y-scroll">
                     <caption>
-                      <h3 class="text-center">Items Table</h3>
+                      <h3 class="text-center">Daily Items Sale Report Section</h3>
                     </caption>
                     <thead class="table-dark">
                         <tr>
@@ -66,11 +66,11 @@
                             <th scope="col">Supplier</th>
                             <th scope="col">Arrival Date</th>
                             <th scope="col">Latest Modified Date</th>
-                            <th scope="col">Details</th>
+                            <th scope="col">Sold</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in items %}
+                        {% for item in sell_item %}
                             <tr class="item">
                                 <th scope="row">{{ item.id }}</th>
                                 <td>{{ item.name }}</td>
@@ -84,45 +84,22 @@
                                 <td>{{ item.created_at }}</td>
                                 <td>{{ item.modified_at }}</td>
                                 <td>
-                                  <div class="btn-group btn-group-sm shadow-0" role="group">
-                                    <form action="{% url 'stock:detail_item' item.id %}">
-                                      {% csrf_token %}
-                                      <button type="submit" class="btn btn-primary btn-floating" data-mdb-color="dark">
-                                        <span style="font-size: 1.4rem;">&#9998;</span>
-                                      </button>
-                                    </form>
-                                    <form action="{% url 'stock:delete_item' item.id %}" method="post">
-                                      {% csrf_token %}
-                                      <button type="submit" class="btn btn-danger btn-floating" data-mdb-color="dark">
-                                        <span style="font-size: 1.4rem;">&#128465;</span>
-                                      </button>
-                                    </form>
+                                  <div class="container">
+                                    <input type="text" name="sold" style="width: 3rem;" required>
                                   </div>
                                 </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                <input class="form-control mb-3" id="mySearch" type="text" placeholder="Search Item By Any field...">
-            </div>
+                <div class="col-12 text-center mt-2">
+                    <button type="submit" class="btn btn-primary">CSV Report</button>
+                </div>
+            </form>
         {% else %}
             <p>Empty Stock. Please add items.</p>
         {% endif %}
     </div>
     <script src="{% static 'stock/mdb5-free-standard/js/mdb.min.js' %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
-    <script>
-      $(document).ready(function(){
-        $('#mySearch').on("keyup", function(){
-          var value = $(this).val().toLowerCase();
-          $('.item').filter(function(){
-            $(this).toggle(
-              $(this).text().toLowerCase().indexOf(value) > -1
-            );
-          })
-        });
-      })
-    </script>
   </body>
 </html>

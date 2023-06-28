@@ -19,6 +19,13 @@ class StockListView(generic.ListView):
     def get_queryset(self):
         return Item.objects.all().order_by('id')
 
+class StockSellListView(generic.ListView):
+    template_name = 'stock/stock_sell_list.html'
+    context_object_name = 'sell_item'
+
+    def get_queryset(self):
+        return Item.objects.all().order_by('id')
+
 def create_item(request):
     item_name = request.POST["item_name"]
     item_category = request.POST["item_category"]
