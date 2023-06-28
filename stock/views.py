@@ -5,8 +5,8 @@ from django.views import generic
 from .models import Item
 
 # Create your views here.
-def index(request):
-    return render(request, 'stock/index.html')
+class Index(generic.TemplateView):
+    template_name = 'stock/index.html'
 
 def create_item(request):
     item_name = request.POST["item_name"]
