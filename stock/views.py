@@ -76,4 +76,4 @@ class StockListView(generic.ListView):
     context_object_name = "items"
 
     def get_queryset(self):
-        return Item.objects.all()
+        return Item.objects.all().order_by('id')
