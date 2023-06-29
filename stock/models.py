@@ -12,3 +12,4 @@ class Item(models.Model):
     supplier = models.TextField(max_length=50, null=True)
     created_at = models.DateTimeField()
     modified_at = models.DateTimeField()
+    sold_quantity = models.IntegerField(default=0)

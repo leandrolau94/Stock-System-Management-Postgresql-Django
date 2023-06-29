@@ -12,4 +12,5 @@ urlpatterns = [
     path('decrease_quantity/<int:item_id>', views.decrease_item_quantity, name='decrease_item_quantity'),
     path('detail_item/<int:pk>', views.StockDetailView.as_view(), name='detail_item'),
     path('stock_sell_list/', views.StockSellListView.as_view(), name='stock_sell_list'),
+    path('stock_sell_analysis/<int:sold_id>', views.stock_sell_analysis, name='stock_sell_analysis'),
 ]

@@ -26,6 +26,11 @@ class StockSellListView(generic.ListView):
     def get_queryset(self):
         return Item.objects.all().order_by('id')
 
+def stock_sell_analysis(request, sold_id):
+    sold = request.POST["sold"]
+    item_sold = Item.objects.get(id=sold_id)
+    return redirect(reverse('stock:stock_list'))
+
 def create_item(request):
     item_name = request.POST["item_name"]
     item_category = request.POST["item_category"]
