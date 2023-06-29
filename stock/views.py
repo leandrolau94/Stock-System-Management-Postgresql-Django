@@ -4,8 +4,14 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 from .models import Item
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter, inch
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
 import datetime
 import csv
+import io
 
 # Create your views here.
 class Index(generic.TemplateView):
@@ -65,7 +71,20 @@ def create_sell_report(request):
             ])
         return response
     elif option_choice[0] == 'pdf':
-        print('making inform to pdf')
+        # Create a file-like buffer to receive PDF data.
+        buffer = io.BytesIO()
+        # Create the PDF object, using the buffer as its "file."
+        p = canvas.Canvas(buffer)
+        # Draw things on the PDF. Here's where the PDF generation happens.
+        # See the ReportLab documentation for the full list of functionality.
+        p.drawString(10, 800, f"Name | Category | Quantity(Sold) | Acquisition Price | Sell Price | On Discount | Discount Percentage | Supplier | Arrival Date | Latest Modified Date")
+        # Close the PDF object cleanly, and we're done.
+        p.showPage()
+        p.save()
+        # FileResponse sets the Content-Disposition header so that browsers
+        # present the option to save the file.
+        buffer.seek(0)
+        return FileResponse(buffer, as_attachment=True, filename="hello.pdf")
     else:
         return redirect(reverse('stock:stock_list'))
 
