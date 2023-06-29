@@ -29,7 +29,9 @@ class StockSellListView(generic.ListView):
 def stock_sell_analysis(request, sold_id):
     sold = request.POST["sold"]
     item_sold = Item.objects.get(id=sold_id)
-    return redirect(reverse('stock:stock_list'))
+    item_sold.sold_quantity = sold
+    item_sold.save()
+    return redirect(reverse('stock:stock_sell_list'))
 
 def create_item(request):
     item_name = request.POST["item_name"]
