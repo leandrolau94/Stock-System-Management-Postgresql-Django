@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 from .models import Item
+import datetime
+import csv
 
 # Create your views here.
 class Index(generic.TemplateView):
@@ -32,6 +35,39 @@ def stock_sell_analysis(request, sold_id):
     item_sold.sold_quantity = sold
     item_sold.save()
     return redirect(reverse('stock:stock_sell_list'))
+
+def create_sell_report(request):
+    option_choice = request.POST.getlist("inlineRadioOptions")
+    if option_choice[0] == 'csv':
+        today = datetime.datetime.today().date()
+        response = HttpResponse(
+            content_type="text/csv",
+            headers={"Content-Disposition": f'attachment; filename="Seal-Inform-{today}.csv"'},
+        )
+        writer = csv.writer(response)
+        writer.writerow(["Daily Sales Inform", f"Date: {today}"])
+        writer.writerow([
+            "Name", "Category", "Quantity (Sold)", "Acquisition Price", "Sell Price",
+            "On Discount", "Discount Percentage", "Supplier", "Arrival Date", "Latest Modified Date",
+        ])
+        for item in Item.objects.all():
+            writer.writerow([
+                item.name,
+                item.category,
+                f"{item.quantity} ({item.sold_quantity})",
+                item.acquisition_price,
+                item.sell_price,
+                item.discount,
+                item.discount_percentage,
+                item.supplier,
+                item.created_at,
+                item.modified_at,
+            ])
+        return response
+    elif option_choice[0] == 'pdf':
+        print('making inform to pdf')
+    else:
+        return redirect(reverse('stock:stock_list'))
 
 def create_item(request):
     item_name = request.POST["item_name"]
