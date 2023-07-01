@@ -6,12 +6,10 @@ from django.views import generic
 from .models import Item
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter, inch
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from django.http import FileResponse
-from reportlab.pdfgen import canvas
+from fpdf import FPDF
+from fpdf.fonts import FontFace
 import datetime
 import csv
-import io
 
 # Create your views here.
 class Index(generic.TemplateView):
@@ -71,20 +69,42 @@ def create_sell_report(request):
             ])
         return response
     elif option_choice[0] == 'pdf':
-        # Create a file-like buffer to receive PDF data.
-        buffer = io.BytesIO()
-        # Create the PDF object, using the buffer as its "file."
-        p = canvas.Canvas(buffer)
-        # Draw things on the PDF. Here's where the PDF generation happens.
-        # See the ReportLab documentation for the full list of functionality.
-        p.drawString(10, 800, f"Name | Category | Quantity(Sold) | Acquisition Price | Sell Price | On Discount | Discount Percentage | Supplier | Arrival Date | Latest Modified Date")
-        # Close the PDF object cleanly, and we're done.
-        p.showPage()
-        p.save()
-        # FileResponse sets the Content-Disposition header so that browsers
-        # present the option to save the file.
-        buffer.seek(0)
-        return FileResponse(buffer, as_attachment=True, filename="hello.pdf")
+        today = datetime.datetime.today().date()
+        data = [
+            ["Name", "Category", "Quantity (Sold)", "Acquisition Price", "Sell Price",
+            "On Discount", "Discount Percentage", "Supplier", "Arrival Date", "Latest Modified Date",]
+        ]
+        items = Item.objects.all()
+        for item in items:
+            data.append([
+                item.name, item.category, f"{item.quantity} ({item.sold_quantity})", f"{item.acquisition_price}",
+                f"{item.sell_price}", f"{item.discount}", f"{item.discount_percentage}", f"{item.supplier}",
+                f"{item.created_at}", f"{item.modified_at}",
+            ])
+        pdf = FPDF()
+        pdf.set_font("helvetica", size=8)
+
+        # Styled table:
+        pdf.add_page()
+        pdf.set_draw_color(255, 0, 0)
+        pdf.set_line_width(0.3)
+        headings_style = FontFace(emphasis="BOLD", color=255, fill_color=(255, 50, 200))
+        with pdf.table(
+            borders_layout="NO_HORIZONTAL_LINES",
+            cell_fill_color=(224, 235, 255),
+            col_widths=20,
+            headings_style=headings_style,
+            line_height=5,
+            text_align="CENTER",
+            width=190,
+        ) as table:
+            for data_row in data:
+                row = table.row()
+                for datum in data_row:
+                    row.cell(datum)
+        response = HttpResponse(bytes(pdf.output()), content_type='application/pdf')
+        response['Content-Disposition'] = f"attachment; filename=Seal-Inform-{today}.pdf"
+        return response
     else:
         return redirect(reverse('stock:stock_list'))
 
