@@ -79,18 +79,19 @@ def create_sell_report(request):
             data.append([
                 item.name, item.category, f"{item.quantity} ({item.sold_quantity})", f"{item.acquisition_price}",
                 f"{item.sell_price}", f"{item.discount}", f"{item.discount_percentage}", f"{item.supplier}",
-                f"{item.created_at}", f"{item.modified_at}",
+                f"{item.created_at.today()}", f"{item.modified_at.today()}",
             ])
         pdf = FPDF()
         pdf.set_font("helvetica", size=8)
 
         # Styled table:
         pdf.add_page()
-        pdf.set_draw_color(255, 0, 0)
+        pdf.set_draw_color(190, 190, 190)
         pdf.set_line_width(0.3)
-        headings_style = FontFace(emphasis="BOLD", color=255, fill_color=(255, 50, 200))
+        pdf.set_margins(0, 5, 5)
+        headings_style = FontFace(emphasis="BOLD", color=255, fill_color=(47, 31, 92))
         with pdf.table(
-            borders_layout="NO_HORIZONTAL_LINES",
+            borders_layout="MINIMAL",
             cell_fill_color=(224, 235, 255),
             col_widths=20,
             headings_style=headings_style,
