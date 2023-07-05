@@ -4,8 +4,6 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 from .models import Item
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter, inch
 from fpdf import FPDF
 from fpdf.fonts import FontFace
 import datetime
