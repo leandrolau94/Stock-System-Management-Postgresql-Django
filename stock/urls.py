@@ -14,4 +14,5 @@ urlpatterns = [
     path('stock_sell_list/', views.StockSellListView.as_view(), name='stock_sell_list'),
     path('stock_sell_analysis/<int:sold_id>', views.stock_sell_analysis, name='stock_sell_analysis'),
     path('create_sell_report/', views.create_sell_report, name='create_sell_report'),
+    path('clear_all_sold/', views.clear_all_sold, name='clear_all_sold'),
 ]

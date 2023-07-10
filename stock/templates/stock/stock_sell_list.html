@@ -19,7 +19,7 @@
     <!-- header -->
     {% include "stock/header.html" %}
 
-    <div class="d-flex mt-3 table-responsive p-3" style="height: 33rem;">
+    <div class="d-flex mt-5 table-responsive p-3" style="height: 33rem;">
         {% if sell_item %}
           <div class="table-responsive">
             <table class="table caption-top bg-secondary text-light table-hover table-borderless overflow-y-scroll">
@@ -73,21 +73,29 @@
                   {% endfor %}
               </tbody>
             </table>
-            <div class="col-12 text-center mt-2">
-              <form action="{% url 'stock:create_sell_report' %}" method="post">
-                {% csrf_token %}
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="csv" />
-                  <label class="form-check-label" for="inlineRadio1">csv</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="pdf" />
-                  <label class="form-check-label" for="inlineRadio2">pdf</label>
-                </div>
-                <div class="col-12 text-center mt-2">
-                  <button type="submit" class="btn btn-primary">Generate Report</button>
-                </div>
-              </form>
+            <div class="row">
+              <div class="col-6 text-center mt-2">
+                <form action="{% url 'stock:create_sell_report' %}" method="post">
+                  {% csrf_token %}
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="csv" />
+                    <label class="form-check-label" for="inlineRadio1">csv</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="pdf" />
+                    <label class="form-check-label" for="inlineRadio2">pdf</label>
+                  </div>
+                  <div class="col-12 text-center mt-2">
+                    <button type="submit" class="btn btn-primary">Generate Report</button>
+                  </div>
+                </form>
+              </div>
+              <div class="col-6 text-center mt-2">
+                <form class="table-responsive" action="{% url 'stock:clear_all_sold' %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-primary">Clear Sold Entries</button>
+                </form>
+              </div>
             </div>
           </div>
         {% else %}
@@ -95,5 +103,6 @@
         {% endif %}
     </div>
     <script src="{% static 'stock/mdb5-free-standard/js/mdb.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
   </body>
 </html>

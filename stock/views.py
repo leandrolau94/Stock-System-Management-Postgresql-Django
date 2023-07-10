@@ -165,3 +165,10 @@ def decrease_item_quantity(request, item_id):
     increase_item.modified_at = timezone.now()
     increase_item.save()
     return redirect(reverse('stock:stock_list'))
+
+def clear_all_sold(request):
+    items = Item.objects.all()
+    for item in items:
+        item.sold_quantity = 0
+        item.save()
+    return redirect(reverse('stock:stock_sell_list'))

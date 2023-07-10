@@ -19,7 +19,7 @@
     <!-- header -->
     {% include "stock/header.html" %}
 
-    <div class="d-flex mt-3 table-responsive p-3" style="height: 33rem;">
+    <div class="d-flex mt-5 table-responsive p-3" style="height: 33rem;">
         {% if items %}
             <div class="table-responsive">
                 <table class="table caption-top bg-secondary text-light table-hover table-borderless overflow-y-scroll">
@@ -85,6 +85,7 @@
     <script src="{% static 'stock/mdb5-free-standard/js/mdb.min.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
     <script>
       $(document).ready(function(){
         $('#mySearch').on("keyup", function(){

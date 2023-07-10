@@ -19,7 +19,7 @@
     <!-- header -->
     {% include "stock/header.html" %}
 
-    <div class="container">
+    <div class="container mt-5">
         <div class="row">
             <div class="col-md-4 offset-md-4">
                 <div class="card mt-4 bg-light shadow-5-strong">
@@ -29,37 +29,37 @@
                             {% csrf_token %}
                             <!-- name input -->
                             <div class="form-outline mb-4">
-                                <input type="text" id="formname" class="form-control" name="item_name" required />
+                                <input type="text" class="form-control border-bottom" name="item_name" required />
                                 <label class="form-label" for="formname">Item Name</label>
                             </div>
 
                             <!-- category input -->
                             <div class="form-outline mb-4">
-                                <input type="text" id="formcategory" class="form-control" name="item_category" required />
+                                <input type="text" id="formcategory" class="form-control border-bottom" name="item_category" required />
                                 <label class="form-label" for="formcategory">Item Category</label>
                             </div>
 
                             <!-- quantity input -->
                             <div class="form-outline mb-4">
-                                <input type="text" id="formquantity" class="form-control" name="item_quantity" required />
+                                <input type="text" id="formquantity" class="form-control border-bottom" name="item_quantity" required />
                                 <label class="form-label" for="formquantity">Quantity</label>
                             </div>
 
                             <!-- acquisition_price input -->
                             <div class="form-outline mb-4">
-                                <input type="text" id="formacqprice" class="form-control" name="item_acquisition_price" required />
+                                <input type="text" id="formacqprice" class="form-control border-bottom" name="item_acquisition_price" required />
                                 <label class="form-label" for="formacqprice">Acquisition Price</label>
                             </div>
 
                             <!-- sell_price input -->
                             <div class="form-outline mb-4">
-                                <input type="text" id="formsellprice" class="form-control" name="item_sell_price" required />
+                                <input type="text" id="formsellprice" class="form-control border-bottom" name="item_sell_price" required />
                                 <label class="form-label" for="formsellprice">Sell Price</label>
                             </div>
 
                             <!-- supplier input -->
                             <div class="form-outline mb-4">
-                                <input type="text" id="formsupplier" class="form-control" name="item_supplier" required />
+                                <input type="text" id="formsupplier" class="form-control border-bottom" name="item_supplier" required />
                                 <label class="form-label" for="formsupplier">Supplier</label>
                             </div>
 
@@ -72,5 +72,6 @@
         </div>
     </div>
     <script src="{% static 'stock/mdb5-free-standard/js/mdb.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
   </body>
 </html>
